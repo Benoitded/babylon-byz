@@ -1,0 +1,76 @@
+.menu {
+  display: flex;
+  gap: 16px;
+  height: 45px;
+  .navigation {
+    @include primary-div;
+    padding: 4px;
+    box-sizing: border-box;
+    flex-direction: row;
+    gap: 2px;
+    .itemMenu {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      gap: 6px;
+      height: 100%;
+      width: 100%;
+      padding: 6px 12px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      transition: 0.2s;
+      &:hover {
+        // text-decoration: underline;
+        background-color: rgba(255, 255, 255, 0.2) !important;
+      }
+      &:active {
+        transform: scale(0.96);
+      }
+      .openIcon {
+        width: 14px;
+      }
+      &.comingsoon {
+        &:hover {
+          text-decoration: inherit;
+        }
+      }
+      &.current {
+        // text-decoration: underline;
+        background-color: hsla(0, 0%, 100%, 0.1);
+      }
+    }
+    .networks {
+      display: none;
+      padding-top: 8px;
+      padding-bottom: 4px;
+    }
+  }
+  .footerControls {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .menu {
+    padding: 0 25px;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 25px;
+    width: 100vw;
+    height: 55px;
+    left: 0;
+    // font-size: 18px;
+  }
+}
+
+@keyframes popupAnimation {
+  from {
+    transform: translateY(100%);
+    // opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    // opacity: 1;
+  }
+}

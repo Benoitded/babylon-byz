@@ -1,0 +1,36 @@
+{
+  "name": "boiler_nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@nextui-org/react": "^2.4.8",
+    "@reown/appkit": "^1.0.4",
+    "@reown/appkit-adapter-wagmi": "^1.0.4",
+    "@tanstack/react-query": "^5.56.2",
+    "file-saver": "^2.0.5",
+    "next": "14.2.13",
+    "next-view-transitions": "^0.3.2",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "sass": "^1.79.3",
+    "viem": "^2.21.14",
+    "wagmi": "^2.12.13"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "@types/file-saver": "^2.0.7",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.13",
+    "typescript": "^5"
+  }
+}

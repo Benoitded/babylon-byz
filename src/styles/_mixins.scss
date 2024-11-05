@@ -1,0 +1,36 @@
+@mixin border-gradient($radius: 12, $color1: ffa500, $color2: ffd700) {
+  border: 2px solid var(--main-purple);
+  border-radius: #{$radius}px;
+  border-image: url("data:image/svg+xml,%3csvg width='1000' height='1000' viewBox='0 0 1000 1000' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3crect x='1' y='1' width='998' height='998' rx='11' stroke='url(%23paint0_linear_1657_13520)' stroke-opacity='0.8' stroke-width='2'/%3e %3cdefs%3e %3clinearGradient id='paint0_linear_1657_13520' x1='1000' y1='0' x2='244.758' y2='1159.43' gradientUnits='userSpaceOnUse'%3e %3cstop stop-color='%23#{$color1}'/%3e %3cstop offset='1' stop-color='%23#{$color2}'/%3e %3c/linearGradient%3e %3c/defs%3e %3c/svg%3e")
+    $radius / #{$radius}px stretch; // Using the $radius variable for both values
+}
+
+@mixin primary-div($isClickable: false, $isResponsive: false) {
+  background-color: var(--main-color);
+  // background-color: red;
+  @include border-gradient(12);
+  box-shadow: inset 0px 0px 17px 0px #4b27448c, 0px 0px 20px 3px #2d172840;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 16px 24px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @if $isClickable {
+    &:hover {
+      border: 2px solid var(--light-pink);
+    }
+    &:active {
+      border: 2px solid var(--very-light-pink);
+    }
+  }
+  @if $isResponsive {
+    @media (max-width: 500px) {
+      padding: 12px 16px;
+    }
+  }
+}
