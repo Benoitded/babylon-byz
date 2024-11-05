@@ -23,8 +23,9 @@ if (!projectId) {
 
 // Set up metadata with the metadata in the layout
 const metadata = {
-  name: "Your project name",
-  description: "Your project description",
+  name: "Byzantine x Babylone",
+  description:
+    "Byzantine is a protocol to permissionlessly allow you to assemble custom providers strategies.",
   url: "https://" + "YourProjectName" + ".vercel.app/", // origin must match your domain & subdomain
   icons: ["/logo-icon.png"],
 };

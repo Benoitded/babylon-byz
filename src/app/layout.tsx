@@ -11,23 +11,26 @@ import "@/styles/globals.css";
 import dynamic from "next/dynamic";
 
 export const metadata: Metadata = {
-  title: "Your project name",
+  title: "Byzantine x Babylone",
   icons: {
     icon: "/logo-icon.png",
   },
-  description: "Your project description",
+  description:
+    "Byzantine is a protocol to permissionlessly allow you to assemble custom providers strategies.",
 
   openGraph: {
     images: ["/og-image.png"],
     type: "website",
-    siteName: "Your project name",
-    title: "Your project name",
-    description: "Your project description",
+    siteName: "Byzantine x Babylone",
+    title: "Byzantine x Babylone",
+    description:
+      "Byzantine is a protocol to permissionlessly allow you to assemble custom providers strategies.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your project name",
-    description: "Your project description",
+    title: "Byzantine x Babylone",
+    description:
+      "Byzantine is a protocol to permissionlessly allow you to assemble custom providers strategies.",
     images: ["/og-image.png"],
   },
 };

@@ -1,5 +1,14 @@
-@import url("https://fonts.cdnfonts.com/css/satoshi");
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+
 :root {
+  --main-background-glass: #2e192a;
+  --main-hover-glass: #ffffff1a;
+  --main-active-glass: #ffffff33;
+
+  --main-pink: #c524a7;
+  --main-hover-pink: #c524a780;
+  --main-active-pink: #c524a799;
+
   /* Dark mode */
   /* - Background */
   --main-background: #06040f;
@@ -35,7 +44,7 @@ body {
   color: var(--main-text);
 
   font-size: 16px;
-  /* font-family: "Satoshi", sans-serif; */
+  font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 500;
