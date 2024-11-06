@@ -11,7 +11,6 @@ import "@/styles/globals.css";
 import dynamic from "next/dynamic";
 import { OKXUniversalProvider } from "@okxconnect/universal-provider";
 import { OKXUniversalConnectUI } from "@okxconnect/ui";
-import { PhantomWalletProvider } from "@/app/context/PhantomWallet";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
@@ -63,14 +62,12 @@ export default function RootLayout({
         <body>
           <NoSSR>
             <Providers>
-              <PhantomWalletProvider>
-                <ReownProvider cookies={cookies}>
-                  <div className="containerTotal">
-                    <Header />
-                    {children}
-                  </div>
-                </ReownProvider>
-              </PhantomWalletProvider>
+              <ReownProvider cookies={cookies}>
+                <div className="containerTotal">
+                  <Header />
+                  {children}
+                </div>
+              </ReownProvider>
             </Providers>
           </NoSSR>
         </body>
