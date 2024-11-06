@@ -10,7 +10,6 @@ import React from "react";
 import { ErrorProvider } from "./context/Error/ErrorContext";
 // import { StakingStatsProvider } from "./context/api/StakingStatsProvider";
 import { BTCWalletProvider } from "./context/wallet/BTCWalletProvider";
-import { CosmosWalletProvider } from "./context/wallet/CosmosWalletProvider";
 import { WalletConnectionProvider } from "./context/wallet/WalletConnectionProvider";
 import { AppState } from "./state";
 
@@ -23,15 +22,13 @@ function Providers({ children }: React.PropsWithChildren) {
         <ErrorProvider>
           <WalletConnectionProvider>
             <BTCWalletProvider>
-              <CosmosWalletProvider>
-                <AppState>
-                  {/* <StakingStatsProvider>
+              <AppState>
+                {/* <StakingStatsProvider>
                     <ReactQueryStreamedHydration> */}
-                  {children}
-                  {/* </ReactQueryStreamedHydration>
+                {children}
+                {/* </ReactQueryStreamedHydration>
                   </StakingStatsProvider> */}
-                </AppState>
-              </CosmosWalletProvider>
+              </AppState>
             </BTCWalletProvider>
           </WalletConnectionProvider>
         </ErrorProvider>

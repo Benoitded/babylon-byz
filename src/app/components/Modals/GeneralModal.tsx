@@ -1,7 +1,6 @@
 import { ReactNode, useEffect, useRef } from "react";
 import { Modal } from "react-responsive-modal";
 // import { Modal } from "@nextui-org/react";
-import styles from "./GeneralModal.module.scss";
 
 import { twMerge } from "tailwind-merge";
 
@@ -43,9 +42,8 @@ export const GeneralModal: React.FC<GeneralModalProps> = ({
       ref={modalRef}
       open={open}
       onClose={() => onClose(false)}
-      // classNames={styles.modal}
       classNames={{
-        modalContainer: styles.modal,
+        modalContainer: "flex items-end justify-center md:items-center font-sa",
         modal: twMerge(
           `m-0 w-full max-w-none rounded-t-2xl bg-base-300 shadow-lg md:w-auto md:rounded-b-2xl max-h-[100svh] min-w-[20rem] md:max-h-[85svh] md:min-w-[30rem]`,
           small ? "md:max-w-[25rem]" : "md:max-w-[45rem] lg:max-w-[55rem]",
@@ -57,7 +55,6 @@ export const GeneralModal: React.FC<GeneralModalProps> = ({
       closeOnEsc={closeOnEsc}
       closeOnOverlayClick={closeOnOverlayClick}
     >
-      dddddd
       {children}
     </Modal>
   );

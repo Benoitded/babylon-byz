@@ -9,12 +9,13 @@
   top: 0px;
   z-index: 200;
   width: 100%;
-  // background: linear-gradient(
-  //   to bottom,
-  //   rgba(22, 8, 19, 1) 0%,
-  //   rgba(22, 8, 19, 0.7) 65%,
-  //   rgba(22, 8, 19, 0) 100%
-  // );
+  background: linear-gradient(
+    to bottom,
+    rgba(22, 8, 19, 1) 0%,
+    rgba(22, 8, 19, 0.7) 65%,
+    rgba(22, 8, 19, 0) 100%
+  );
+
   .logo,
   .connect {
     width: 200px;
@@ -27,8 +28,19 @@
   .logo {
     position: relative;
     justify-content: flex-start;
+    .attributeLogo {
+      position: absolute;
+      bottom: 0px;
+      left: 120px;
+      background-color: hsla(311, 26%, 44%, 0.4);
+      backdrop-filter: blur(5.8px);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
   }
-  // Ajoutez ces nouvelles règles pour le menu du logo
+
   .logoWrapper {
     position: relative;
   }
@@ -85,13 +97,13 @@
       height: 45px;
 
       &.active {
-        border: 2px solid var(--light-pink);
+        border: 2px solid var(--main-active-glass);
       }
     }
     .menu {
       animation: openMenu 0.125s ease-in-out;
       @include primary-div;
-      border: 2px solid var(--light-pink);
+      border: 2px solid var(--main-active-glass);
       position: absolute;
       top: calc(100% + 12px);
       right: 0;
@@ -145,8 +157,8 @@
 @media only screen and (max-width: 450px) {
   .header {
     .logo {
-      min-width: 47px;
-      width: 47px;
+      min-width: 45px;
+      width: 45px;
       overflow: hidden;
     }
   }
