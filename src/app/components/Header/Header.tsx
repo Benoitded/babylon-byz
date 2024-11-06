@@ -24,7 +24,6 @@ import { THEME } from "@okxconnect/ui";
 import { OKXBtcProvider } from "@okxconnect/universal-provider";
 
 import { OKXUniversalProvider } from "@okxconnect/universal-provider";
-import { usePhantomWallet } from "@/app/context/PhantomWallet";
 import { useWalletConnection } from "@/app/context/wallet/WalletConnectionProvider";
 import { useBTCWallet } from "@/app/context/wallet/BTCWalletProvider";
 // import { useAppState } from "@/app/state";
