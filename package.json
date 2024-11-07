@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babylonlabs-io/btc-staking-ts": "^0.4.0-canary.2",
     "@nextui-org/react": "^2.4.8",
     "@okxconnect/ui": "^1.4.3",
     "@okxconnect/universal-provider": "^1.4.2",

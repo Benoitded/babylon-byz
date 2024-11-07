@@ -4,19 +4,21 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./BlockNumber.module.scss";
+import { useBTCWallet } from "@/app/context/wallet/BTCWalletProvider";
+import { useAppState } from "@/app/state";
 
 const BlockNumber: React.FC = () => {
-  const [blockNumber, setBlockNumber] = useState<number>(0);
+  const { currentHeight: blockNumber } = useAppState();
 
-  useEffect(() => {
-    try {
-      fetch("https://mempool.space/signet/api/blocks/tip/height")
-        .then((res) => res.json())
-        .then((data) => setBlockNumber(data));
-    } catch (error) {
-      setBlockNumber(0);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     fetch("https://mempool.space/signet/api/blocks/tip/height")
+  //       .then((res) => res.json())
+  //       .then((data) => setBlockNumber(data));
+  //   } catch (error) {
+  //     setBlockNumber(0);
+  //   }
+  // }, []);
   // Render
   return (
     <footer className={styles.blockNumber}>

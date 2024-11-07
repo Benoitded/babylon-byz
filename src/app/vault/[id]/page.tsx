@@ -97,7 +97,10 @@ export default function Home() {
                 {specificVault.description}
               </div>
             </div>
-            <RestakeApp contractAddress={specificVault.address} />
+            <RestakeApp
+              contractAddress={specificVault.address}
+              finalityProviderPK={[""]}
+            />
           </section>
           <ContentPoSChains
             posChainList={specificVault.pos_chains}

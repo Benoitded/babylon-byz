@@ -1,0 +1,17 @@
+.addressLink {
+  a {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    gap: 6px;
+    svg {
+      width: 16px;
+    }
+  }
+  &:hover {
+    opacity: 0.5;
+  }
+  &.mine {
+    color: var(--light-pink);
+  }
+}
