@@ -1,0 +1,194 @@
+.restakeApp {
+  // @include primary-div-purple(false, true);
+  @include primary-div(false, true);
+  gap: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+  font-size: 14px;
+  overflow: auto;
+  align-items: center;
+
+  // Input container
+  .inputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    .label {
+      font-size: 14px;
+    }
+    .lineInput {
+      border: 2px solid var(--main-active-glass);
+      border-radius: 4px;
+      box-shadow: none;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 24px;
+      box-sizing: border-box;
+      width: 100%;
+      .leftInput {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .tokenDiv {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 4px;
+          // cursor: pointer;
+          & * {
+            transition: 0.2s;
+          }
+          cursor: pointer;
+
+          img,
+          .waitingImg {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background-color: #ffffff09;
+          }
+          .tokenSymbol {
+            font-size: 32px;
+            font-weight: 700;
+            &.vaultShare {
+              color: var(--very-light-pink);
+            }
+          }
+          svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff5d;
+          }
+          &:hover {
+            svg {
+              fill: #ffffff;
+              transform: rotate(6deg) scale(1.1);
+            }
+          }
+          &:active {
+            svg {
+              fill: #ffffff;
+              transform: rotate(-3deg) scale(1.1);
+            }
+          }
+        }
+        .balance {
+          font-size: 10px;
+          color: #ffffff80;
+          cursor: pointer;
+          white-space: nowrap;
+          &:hover {
+            color: var(--white);
+          }
+          &.vaultShareBalance {
+            cursor: default;
+            &:hover {
+              color: #ffffff80;
+            }
+          }
+        }
+      }
+      .rightInput {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        input {
+          //remove arrow number
+          -moz-appearance: textfield;
+          -webkit-appearance: textfield;
+          appearance: textfield;
+          &::-webkit-outer-spin-button,
+          &::-webkit-inner-spin-button {
+            display: none;
+          }
+          //placeholder grey
+          &::placeholder {
+            color: #ffffff80;
+          }
+
+          background-color: transparent;
+          border: none;
+          outline: none;
+          font-size: 32px;
+          font-weight: 700;
+          // font-family: "Satoshi";
+          font-family: "Urbanist", sans-serif;
+          color: var(--white);
+          width: 100%;
+          padding: 0;
+          text-align: end;
+        }
+        .resultAmount {
+          font-size: 32px;
+          font-weight: 700;
+          color: var(--white);
+          width: 100%;
+        }
+        .price {
+          font-size: 10px;
+          color: #ffffff80;
+        }
+      }
+    }
+  }
+
+  // Switch arrows
+  .switchArrows {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-color: var(--main-hover-glass);
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 100px;
+    margin-bottom: -20px;
+    transition: 0.2s;
+    svg {
+      width: 100%;
+      height: 100%;
+      transition: 0.2s;
+    }
+    &:hover {
+      background-color: var(--main-active-glass);
+    }
+    &:active {
+      svg {
+        rotate: 10deg;
+      }
+    }
+  }
+
+  // Restake button
+  .restakeBtn {
+    @include primary-button-pink();
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  // Information section
+  .infoSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .infoLine {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      font-size: 14px;
+      font-weight: 400;
+      color: #ffffff42;
+      span {
+        color: #ffffff80;
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    svg {
+      fill: var(--very-light-pink);
+      opacity: 0.5;
+      cursor: pointer;
+      transition: 0.5s;
+      &:hover {
+        opacity: 1;
+        // animation: iconAnimation 1s ease 1;
+        animation: iconAnimation 0.5s ease-out forwards;
+
+        &.gitbook {
+          fill: orange;
+        }
+        &.github {
+          fill: #14a82a;
+        }
+        &.twitter {
+          fill: #21baff;
+        }
+        &.discord {
+          fill: #505acd;
+        }
+      }
+    }
+    &:active {
+      transform: scale(0.9);
+    }
+    position: relative;
+    label {
+      //Only for the ctrl + F
+      background-color: red;
+      width: 0px;
+      height: 0px;
+      overflow: hidden;
+      position: absolute;
+    }
+  }
+}
+
+@keyframes iconAnimation {
+  0% {
+    transform: rotate(0deg) scale(1); /* État initial */
+  }
+  25% {
+    transform: rotate(45deg) scale(1); /* Rotation de 90 degrés */
+  }
+  50% {
+    transform: rotate(45deg) scale(1); /* Maintien de la rotation */
+  }
+  75% {
+    transform: rotate(0deg) scale(1.15); /* Zoom avant */
+  }
+  100% {
+    transform: rotate(0deg) scale(1); /* Retour à l'état initial */
+  }
+}

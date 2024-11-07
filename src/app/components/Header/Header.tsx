@@ -12,12 +12,10 @@ import Menu from "./Menu/Menu";
 import styles from "./Header.module.scss";
 
 import Logo from "@/assets/logo.png";
-import { useAccount, useDisconnect, useEnsName } from "wagmi";
 
 import CopyIcon from "@/assets/icons/copy.svg";
 import DownloadIcon from "@/assets/icons/download.svg";
 import OpenIcon from "@/assets/icons/open.svg";
-import { useAppKit } from "@reown/appkit/react";
 
 import { OKXUniversalConnectUI } from "@okxconnect/ui";
 import { THEME } from "@okxconnect/ui";

@@ -1,0 +1,118 @@
+.listPoSChain {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  //   margin-left: auto; /* Pushes the icons to the right */
+  width: fit-content;
+  //   margin-left: 14px;
+  //   margin-right: 14px;
+  a {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  & > *:last-child {
+    // margin-right: 42px;
+    .divAVS {
+      margin-right: 2px;
+    }
+  }
+  .divAVS {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    border-radius: 100px;
+    border: 1px solid var(--dark-purple);
+    background-color: var(--very-light-pink);
+    color: black;
+    box-sizing: border-box;
+    height: 30px;
+    padding: 0px;
+    margin-right: -16px;
+    z-index: 1;
+    transition: all 0.2s;
+    cursor: pointer;
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      width: 100%;
+      max-width: 0px;
+      transition: all 0.2s;
+    }
+    &:hover {
+      gap: 4px;
+      border: 1px solid var(--light-pink);
+      padding: 0px 12px 0px 0px;
+      box-sizing: border-box;
+      margin-right: -8px;
+      //quand je hover tu me fais apparaitre le name
+      span {
+        max-width: 110px;
+      }
+    }
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  .divImg {
+    @include div-image-avs(28);
+    border-radius: 50%; // Change to 50% for a perfect circle
+    padding: 0;
+    // border: 1px solid var(--dark-purple);
+    // margin-right: -16px;
+    z-index: 1;
+    transition: all 0.2s;
+    isolation: isolate;
+    overflow: hidden; // Ensure this is present
+
+    img {
+      min-width: 26px !important;
+      position: relative; // Add this line
+      z-index: 1; // Add this line
+      border-radius: 100px;
+    }
+    // &:not(.extraNum):hover {
+    //   // border: 2px solid var(--flash-pink);
+    //   transform: scale(1.2) translateY(-2px);
+    // }
+    // &:not(.extraNum):active {
+    //   transform: translate(1px, 1px);
+    // }
+    &.extraNum {
+      background-color: #873778;
+      font-size: 12px;
+      margin-right: 0;
+    }
+  }
+}
+
+.tooltipLine {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
+  &:not(:first-child) {
+    margin-top: 4px;
+  }
+  .divImg {
+    @include div-image-avs(16);
+  }
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    width: 100%;
+    max-width: 150px;
+  }
+}

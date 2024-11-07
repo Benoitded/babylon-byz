@@ -5,6 +5,9 @@
   --main-hover-glass: #ffffff1a;
   --main-active-glass: #ffffff33;
 
+  --light-pink: #ff98ec;
+  --very-light-pink: #ffd3f7;
+
   --main-pink: #c524a7;
   --main-hover-pink: #c524a780;
   --main-active-pink: #c524a799;
@@ -62,6 +65,16 @@ body {
 
   min-height: 100vh;
   height: 100%;
+}
+
+.containerTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 90px;
+  height: 100%;
+  width: 100%;
 }
 
 .imgBackground {
@@ -124,14 +137,19 @@ input:focus {
 }
 
 .tooltip {
-  display: flex;
-  flex-direction: column;
   padding: 8px 12px;
-  background-color: #404681;
+  /* background-color: #404681; */
+  background-color: var(--main-background-glass);
   font-size: 12px;
   border-radius: 6px;
   /* width: 100%; */
   max-width: 200px;
+  box-shadow: 0px 0px 20px 9px rgb(31 13 27 / 91%),
+    0px 0px 6px 0px rgb(56 41 53 / 91%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .tooltip > .headerTooltip {

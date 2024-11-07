@@ -1,0 +1,46 @@
+.mainStruct {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+  max-width: 1150px;
+  height: 100%;
+  position: relative;
+  // padding-bottom: 60px;
+}
+
+.mainTitle {
+  color: var(--main-active-glass);
+  font-size: 100px;
+  font-weight: 500;
+  margin: 0;
+  // opacity: 0.5;
+}
+
+.backBtn {
+  text-decoration: underline;
+  width: fit-content;
+  margin-top: -10px;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.loading {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+@media only screen and (max-width: 700px) {
+  .mainStruct {
+    flex-direction: column;
+    padding-bottom: 60px;
+  }
+}

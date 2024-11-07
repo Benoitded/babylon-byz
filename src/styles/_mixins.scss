@@ -33,3 +33,64 @@
     }
   }
 }
+
+@mixin primary-button-pink() {
+  background-color: var(--main-pink);
+  padding: 6px 24px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  color: var(--main-white);
+
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background-color: var(--main-hover-pink);
+  }
+  &:active {
+    transform: scale(0.98);
+    background-color: var(--main-active-pink);
+  }
+}
+
+@mixin div-image-avs($sizeImg: 20) {
+  width: $sizeImg + px;
+  min-width: $sizeImg + px;
+  height: $sizeImg + px;
+  border-radius: 2px;
+  padding: 1px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--very-light-pink);
+  box-shadow: 0 4px 6px rgb(34 15 26 / 20%);
+  overflow: hidden;
+  isolation: isolate; // Add this line
+  mask-image: radial-gradient(circle, white 100%, black 100%); // Add this line
+  @if $sizeImg > 40 {
+    padding: 2px;
+    img {
+      filter: drop-shadow(1px 1px 1px #c98686);
+    }
+  } @else {
+    padding: 1px;
+    img {
+      filter: drop-shadow(2px 2px 1.5px #de9c9c);
+    }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 1px;
+  }
+}

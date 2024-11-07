@@ -1,0 +1,22 @@
+.contentAVS {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.problem {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  height: calc(50vh);
+  width: 100%;
+  a {
+    text-decoration: underline;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

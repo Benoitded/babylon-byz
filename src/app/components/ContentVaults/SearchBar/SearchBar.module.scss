@@ -1,0 +1,37 @@
+.searchBar {
+  // background-color: var(--main-background-glass);
+  border: 2px solid var(--main-background-glass);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // gap: 6px;
+  height: 32px;
+  width: 100%;
+  padding: 6px 14px 6px 12px;
+  box-sizing: border-box;
+  .searchIcon {
+    // margin-right: 6px;
+    height: 100%;
+  }
+  input {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+  }
+  .shortcuts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    padding-left: 2px;
+    svg {
+      width: 16px;
+      min-width: 16px;
+      fill: #ffffff30;
+      &.active {
+        fill: #ffffff50;
+      }
+    }
+  }
+}

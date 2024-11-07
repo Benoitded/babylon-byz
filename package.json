@@ -23,6 +23,7 @@
     "bitcoinjs-lib": "^6.1.5",
     "file-saver": "^2.0.5",
     "i": "^0.3.7",
+    "lottie-react": "^2.4.0",
     "next": "14.2.13",
     "next-themes": "^0.4.3",
     "next-view-transitions": "^0.3.2",
@@ -43,9 +44,11 @@
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-blockies": "^1.4.4",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
+    "react-blockies": "^1.4.1",
     "typescript": "^5"
   }
 }

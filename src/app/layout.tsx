@@ -2,7 +2,6 @@
 
 import type { Metadata, Viewport } from "next";
 // import "./globals.css";
-import ReownProvider from "@/app/context/reown";
 import Header from "@/app/components/Header/Header";
 import { ViewTransitions } from "next-view-transitions";
 
@@ -12,6 +11,8 @@ import dynamic from "next/dynamic";
 import { OKXUniversalProvider } from "@okxconnect/universal-provider";
 import { OKXUniversalConnectUI } from "@okxconnect/ui";
 import Providers from "./providers";
+import Footer from "./components/Footer/Footer";
+import { ContextProvider } from "./context/ContextProvider";
 
 export const metadata: Metadata = {
   title: "Byzantine x Babylone",
@@ -62,12 +63,15 @@ export default function RootLayout({
         <body>
           <NoSSR>
             <Providers>
-              <ReownProvider cookies={cookies}>
-                <div className="containerTotal">
-                  <Header />
-                  {children}
+              <ContextProvider>
+                <div className={"containerTotal"}>
+                  <div className={"containerTop"}>
+                    <Header />
+                    {children}
+                  </div>
+                  <Footer />
                 </div>
-              </ReownProvider>
+              </ContextProvider>
             </Providers>
           </NoSSR>
         </body>
