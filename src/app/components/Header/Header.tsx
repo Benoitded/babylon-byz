@@ -225,7 +225,7 @@ const Header: React.FC = () => {
           </div>
         )}
       </div>
-      <Menu />
+      {/* <Menu /> */}
       <div className={styles.connect}>
         <button
           className={styles.containerHeader}
