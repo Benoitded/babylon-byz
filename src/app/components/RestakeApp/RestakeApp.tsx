@@ -5,10 +5,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import styles from "./RestakeApp.module.scss";
-import SwitchArrowsIcon from "@/assets/icons/switchArrows.svg";
 import Bitcoin from "@/assets/bitcoin.svg";
 
-import { BTC_PRICE, RATIO } from "@/app/context/ContextProvider";
+import { BTC_PRICE } from "@/app/context/ContextProvider";
 import { useBTCWallet } from "@/app/context/wallet/BTCWalletProvider";
 import { useWalletConnection } from "@/app/context/wallet/WalletConnectionProvider";
 import { useVersions } from "@/app/hooks/api/useVersions";
@@ -35,6 +34,7 @@ import { Psbt } from "bitcoinjs-lib";
 
 interface RestakeAppProps {
   finalityProviderPK: string[];
+  avs_symbiotic: string[];
   contractAddress: string;
 }
 
@@ -43,6 +43,7 @@ const CHAIN_ID = 17000;
 const RestakeApp: React.FC<RestakeAppProps> = ({
   finalityProviderPK,
   contractAddress,
+  avs_symbiotic,
 }) => {
   const searchParams = useSearchParams();
 
@@ -91,8 +92,9 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
   const balanceOfVault = 0; // TODO change
 
   // const [amountBtcOfUser, setAmountBtcOfUser] = useState<number>(0.0007);
-  const [numberDaysOfUser, setNumberDaysOfUser] = useState<number>(60);
-  const [timeStakeOfUser, setTimeStakeOfUser] = useState<number>(0);
+  const [numberDaysOfUser, setNumberDaysOfUser] = useState<number>(60); // what we change we the range
+  const [timeStakeOfUser, setTimeStakeOfUser] = useState<number>(0); // what's sent to the blockchain
+  const [rewardsAddress, setRewardsAddress] = useState<string>("");
 
   useEffect(() => {
     //You can convert the number of days to blocks, knowing that 1 block = 10 minutes
@@ -119,9 +121,15 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
     fetchBalance();
   }, []);
 
-  function handleSwitchArrows() {
-    console.log("Switch arrows");
-    toast.error(<div>It's not possible to withdraw at this time.</div>);
+  async function addReceiverAddress(
+    txHash: string,
+    address_receiver: string,
+    avs_symbiotic: string[]
+  ) {
+    await fetch("/api/addReceiverAddress", {
+      method: "POST",
+      body: JSON.stringify({ txHash, address_receiver, avs_symbiotic }),
+    });
   }
 
   async function handleRestake() {
@@ -147,6 +155,7 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
         </div>,
         { id: txHash, duration: 10000 }
       );
+      await addReceiverAddress(txHash, rewardsAddress, avs_symbiotic);
     }
     return;
   }
@@ -327,44 +336,6 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
         </div>
       </div>
 
-      {/* Switch arrows */}
-      <div className={styles.switchArrows} onClick={handleSwitchArrows}>
-        <SwitchArrowsIcon />
-      </div>
-
-      {/* Receive tokens */}
-      <div className={styles.inputContainer}>
-        <div className={styles.label}>Receive</div>
-        <div className={styles.lineInput}>
-          <div className={styles.leftInput}>
-            <div className={styles.tokenDiv}>
-              {/* <div className={styles.waitingImg} /> */}
-              <span className={`${styles.tokenSymbol} ${styles.vaultShare}`}>
-                Deposited
-              </span>
-            </div>
-
-            <div className={`${styles.balance} ${styles.vaultShareBalance}`}>
-              <span>Balance: {(Number(balanceOfVault) / 1e18).toFixed(8)}</span>
-            </div>
-          </div>
-          <div className={styles.rightInput}>
-            <div className={styles.resultAmount}>
-              <div>
-                {stakeAmount
-                  ? (stakeAmount * RATIO).toFixed(6).replace(/\.?0+$/, "")
-                  : 0}
-              </div>
-            </div>
-            <div className={styles.price}>
-              <span>
-                ${stakeAmount ? (stakeAmount * BTC_PRICE).toFixed(2) : 0}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Select duration */}
       <div className={`${styles.inputContainer} ${styles.selectDuration}`}>
         <div className={styles.label}>Select duration</div>
@@ -382,6 +353,23 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
               max="730"
               value={numberDaysOfUser}
               onChange={(e) => setNumberDaysOfUser(Number(e.target.value))}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Select rewards address */}
+      <div
+        className={`${styles.inputContainer} ${styles.selectRewardsAddress}`}
+      >
+        <div className={styles.label}>Select symbiotic rewards EVM address</div>
+        <div className={styles.lineInput}>
+          <div className={styles.rightInput}>
+            <input
+              type="text"
+              value={rewardsAddress}
+              onChange={(e) => setRewardsAddress(e.target.value)}
+              placeholder="0x..."
             />
           </div>
         </div>
@@ -418,6 +406,17 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
             }}
           >
             Max stake is 0.05BTC
+          </button>
+        ) : rewardsAddress === "" ? (
+          <button
+            className={`${styles.restakeBtn} ${styles.disabled}`}
+            onClick={() => {
+              toast.error(
+                "Please write down your address where you want to receive your Symbiotic rewards"
+              );
+            }}
+          >
+            Enter your reward address
           </button>
         ) : (
           <button className={styles.restakeBtn} onClick={handleRestake}>

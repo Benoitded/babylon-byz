@@ -101,6 +101,9 @@ export default function Home() {
               finalityProviderPK={specificVault.pos_chains.map(
                 (posChain) => posChain.address
               )}
+              avs_symbiotic={specificVault.avs_symbiotic.map(
+                (avs) => avs.address
+              )}
             />
           </section>
           <ContentPoSChains

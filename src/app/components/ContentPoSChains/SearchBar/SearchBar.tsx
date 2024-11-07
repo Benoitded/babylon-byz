@@ -61,11 +61,19 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.key === "f" || event.key === "F") && !event.metaKey) {
-        if (!inputRef.current?.matches(":focus")) {
-          event.preventDefault();
-          inputRef.current?.focus();
-        }
+      // Vérifier si l'élément actif est un input ou textarea
+      const activeElement = document.activeElement;
+      const isInputActive =
+        activeElement?.tagName === "INPUT" ||
+        activeElement?.tagName === "TEXTAREA";
+
+      if (
+        (event.key === "f" || event.key === "F") &&
+        !event.metaKey &&
+        !isInputActive
+      ) {
+        event.preventDefault();
+        inputRef.current?.focus();
       }
     };
 
