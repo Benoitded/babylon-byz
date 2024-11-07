@@ -99,7 +99,9 @@ export default function Home() {
             </div>
             <RestakeApp
               contractAddress={specificVault.address}
-              finalityProviderPK={[""]}
+              finalityProviderPK={specificVault.pos_chains.map(
+                (posChain) => posChain.address
+              )}
             />
           </section>
           <ContentPoSChains

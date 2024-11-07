@@ -13,6 +13,7 @@ import { OKXUniversalConnectUI } from "@okxconnect/ui";
 import Providers from "./providers";
 import Footer from "./components/Footer/Footer";
 import { ContextProvider } from "./context/ContextProvider";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Byzantine x Babylone",
@@ -64,6 +65,15 @@ export default function RootLayout({
           <NoSSR>
             <Providers>
               <ContextProvider>
+                <Toaster
+                  position="bottom-right"
+                  toastOptions={{
+                    style: {
+                      background: "#111",
+                      color: "#FFF",
+                    },
+                  }}
+                />
                 <div className={"containerTotal"}>
                   <div className={"containerTop"}>
                     <Header />

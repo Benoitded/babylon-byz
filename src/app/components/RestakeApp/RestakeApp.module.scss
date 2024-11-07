@@ -1,7 +1,7 @@
 .restakeApp {
   // @include primary-div-purple(false, true);
   @include primary-div(false, true);
-  gap: 16px;
+  gap: 8px;
   padding: 16px;
   box-sizing: border-box;
   font-size: 14px;
@@ -14,6 +14,37 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+
+    &.selectDuration {
+      margin-top: 24px;
+      .lineInput {
+        flex-direction: column;
+        padding: 12px 24px;
+        gap: 0px;
+        & > * {
+          width: 100%;
+        }
+        .topInput {
+          display: flex;
+          justify-content: flex-end;
+          align-items: flex-end;
+          gap: 4px;
+          .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+          }
+          .unit {
+            font-size: 10px;
+            color: #ffffff80;
+            padding-bottom: 6px;
+          }
+        }
+        input {
+          width: 100%;
+        }
+      }
+    }
     .label {
       font-size: 14px;
     }
@@ -170,6 +201,9 @@
     @include primary-button-pink();
     padding: 10px;
     margin-top: 10px;
+    &.disabled {
+      opacity: 0.5;
+    }
   }
 
   // Information section

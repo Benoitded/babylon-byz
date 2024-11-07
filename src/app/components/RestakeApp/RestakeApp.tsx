@@ -1,15 +1,11 @@
 // src/components/RestakeApp.tsx
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AddressLink } from "@/utils/AddressLink/AddressLink";
-
-// import strategyVaultETHImplementationABI from "@/ABI/strategyVaultETHImplementationABI.json";
-
 import toast from "react-hot-toast";
 
-import SwitchArrowsIcon from "@/assets/icons/switchArrows.svg";
 import styles from "./RestakeApp.module.scss";
+import SwitchArrowsIcon from "@/assets/icons/switchArrows.svg";
 import Bitcoin from "@/assets/bitcoin.svg";
 
 import { BTC_PRICE, RATIO } from "@/app/context/ContextProvider";
@@ -17,8 +13,14 @@ import { useBTCWallet } from "@/app/context/wallet/BTCWalletProvider";
 import { useWalletConnection } from "@/app/context/wallet/WalletConnectionProvider";
 import { useVersions } from "@/app/hooks/api/useVersions";
 import { useAppState } from "@/app/state";
+
 import { getFeeRateFromMempool } from "@/utils/getFeeRateFromMempool";
 import { getNetworkFees } from "@/utils/mempool_api";
+import { AddressLink } from "@/utils/AddressLink/AddressLink";
+import {
+  createStakingTx,
+  signStakingTx,
+} from "@/utils/delegations/signStakingTx";
 
 import {
   OVERFLOW_HEIGHT_WARNING_THRESHOLD,
@@ -26,12 +28,10 @@ import {
   UTXO_KEY,
 } from "@/app/common/constants";
 
-import {
-  createStakingTx,
-  signStakingTx,
-} from "@/utils/delegations/signStakingTx";
 import { GlobalParamsVersion } from "@/app/types/globalParams";
 import { Psbt } from "bitcoinjs-lib";
+
+// import strategyVaultETHImplementationABI from "@/ABI/strategyVaultETHImplementationABI.json";
 
 interface RestakeAppProps {
   finalityProviderPK: string[];
@@ -90,10 +90,14 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
 
   const balanceOfVault = 0; // TODO change
 
-  const balanceToken = 0; // TODO change
-
   // const [amountBtcOfUser, setAmountBtcOfUser] = useState<number>(0.0007);
+  const [numberDaysOfUser, setNumberDaysOfUser] = useState<number>(60);
   const [timeStakeOfUser, setTimeStakeOfUser] = useState<number>(0);
+
+  useEffect(() => {
+    //You can convert the number of days to blocks, knowing that 1 block = 10 minutes
+    setTimeStakeOfUser(numberDaysOfUser * 24 * 6);
+  }, [numberDaysOfUser]);
 
   const [currentBalance, setCurrentBalance] = useState(0);
   const [stakeAmount, setStakeAmount] = useState<number | undefined>(() => {
@@ -101,8 +105,6 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
     return amount ? parseFloat(amount) : undefined;
   });
   const [feeRate, setFeeRate] = useState<number | null>(null);
-  const [unsignedStakingPsbt, setUnsignedStakingPsbt] = useState<Psbt>();
-  const [stakingTerm, setStakingTerm] = useState<number | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -118,6 +120,7 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
   }, []);
 
   function handleSwitchArrows() {
+    console.log("Switch arrows");
     toast.error(<div>It's not possible to withdraw at this time.</div>);
   }
 
@@ -126,21 +129,25 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
     const txHash = await handleSign(
       stakeAmount * 10 ** 8,
       timeStakeOfUser,
-      "f4940b238dcd00535fde9730345bab6ff4ea6d413cc3602c4033c10f251c7e81"
+      finalityProviderPK[0]
+      // "f4940b238dcd00535fde9730345bab6ff4ea6d413cc3602c4033c10f251c7e81"
     );
-    toast.success(
-      <div className="confirmedTransaction">
-        Transaction hash confirmed!
-        <a
-          href={`https://mempool.space/signet/tx/${txHash}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on Mempool
-        </a>
-      </div>,
-      { id: txHash, duration: 10000 }
-    );
+
+    if (txHash) {
+      toast.success(
+        <div className="confirmedTransaction">
+          Transaction hash confirmed!
+          <a
+            href={`https://mempool.space/signet/tx/${txHash}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on Mempool
+          </a>
+        </div>,
+        { id: txHash, duration: 10000 }
+      );
+    }
     return;
   }
 
@@ -165,7 +172,7 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
         throw new Error("No available balance");
 
       // Sign the staking transaction
-      const { stakingTxHex, stakingTerm } = await signStakingTx(
+      const { stakingTxHex, stakingTerm, txHash } = await signStakingTx(
         btcWallet.signPsbt,
         btcWallet.pushTx,
         currentVersion,
@@ -186,7 +193,7 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
       // handleFeedbackModal("success");
       // handleLocalStorageDelegations(stakingTxHex, stakingTerm);
       // handleResetState();
-      return stakingTxHex;
+      return txHash;
     } catch (error: Error | any) {
       toast.error(error.message);
     } finally {
@@ -203,16 +210,16 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
     // const memoizedFeeRate = selectedFeeRate || defaultFeeRate;
     const memoizedFeeRate = defaultFeeRate;
 
-    console.log("currentVersion", currentVersion);
-    console.log("btcWallet.network", btcWallet.network);
-    console.log("btcWallet.address", btcWallet.address);
-    console.log("btcWallet.publicKeyNoCoord", btcWallet.publicKeyNoCoord);
-    console.log("memoizedFeeRate", memoizedFeeRate);
-    console.log("availableUTXOs", availableUTXOs);
-    console.log("--------------------------------");
-    console.log("stakingAmountSat", stakingAmountSat);
-    console.log("stakingTimeBlocks", stakingTimeBlocks);
-    console.log("finalityProviderPK", finalityProviderPK);
+    // console.log("currentVersion", currentVersion);
+    // console.log("btcWallet.network", btcWallet.network);
+    // console.log("btcWallet.address", btcWallet.address);
+    // console.log("btcWallet.publicKeyNoCoord", btcWallet.publicKeyNoCoord);
+    // console.log("memoizedFeeRate", memoizedFeeRate);
+    // console.log("availableUTXOs", availableUTXOs);
+    // console.log("--------------------------------");
+    // console.log("stakingAmountSat", stakingAmountSat);
+    // console.log("stakingTimeBlocks", stakingTimeBlocks);
+    // console.log("finalityProviderPK", finalityProviderPK);
 
     if (
       !currentVersion ||
@@ -227,41 +234,41 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
     }
 
     try {
-      const { unsignedStakingPsbt, stakingTerm, stakingFeeSat } =
-        createStakingTx(
-          currentVersion,
-          stakingAmountSat,
-          stakingTimeBlocks,
-          finalityProviderPK,
-          btcWallet.network,
-          btcWallet.address,
-          btcWallet.publicKeyNoCoord,
-          memoizedFeeRate,
-          availableUTXOs
-        );
+      const { stakingFeeSat } = createStakingTx(
+        currentVersion,
+        stakingAmountSat,
+        stakingTimeBlocks,
+        finalityProviderPK,
+        btcWallet.network,
+        btcWallet.address,
+        btcWallet.publicKeyNoCoord,
+        memoizedFeeRate,
+        availableUTXOs
+      );
 
       console.log("stakingFeeSat", stakingFeeSat);
-      console.log("unsignedStakingPsbt", unsignedStakingPsbt);
-      console.log("stakingTerm", stakingTerm);
       setFeeRate(stakingFeeSat);
-      setUnsignedStakingPsbt(unsignedStakingPsbt);
-      setStakingTerm(stakingTerm);
 
       return stakingFeeSat;
     } catch (error) {
       console.error("Error getting fees", error);
       setFeeRate(null);
-      setStakingTerm(null);
       return 0;
     }
   };
 
   useEffect(() => {
+    // const stakingTxHex =
+    //   "02000000000101f7ca7e754294239e958fc3f59c718bad6342767db3acc33debe9efc2baabeecd0200000000fdffffff0380380100000000002251205a53c030ee721fbe06df2720c0befe00c50d2ecc7b0bd379a83898de523d15f30000000000000000496a476262743400afd7f1dfc19eaa6cac99b7feda52e6199a8be829db750c4de0b20c50b8c3c1bdf4940b238dcd00535fde9730345bab6ff4ea6d413cc3602c4033c10f251c7e81fa00f212480000000000225120818cf43f742d8462a78ee17338a8f59e8a11196e2fd76e77546f8a378f942b1f014033e4f64dd60c52f0b382a41be43d2400ff6b9b2339a54071c49f43f786335c0b98fb4300e684d990a8f22c3f0c36f787d6c9930d414ceb6950d44e72bb4b12a4dc5d0300";
+    // const tx = Psbt.fromHex(stakingTxHex).extractTransaction();
+    // const txid = tx.getId();
+    // console.log("txid:", txid);
     if (stakeAmount) {
       getTransactionScript(
         stakeAmount * 10 ** 8,
         timeStakeOfUser,
-        "2ba550f80f9a63cd0d00d306e96a3f73c09be93169a3ed4e1903e9e5c3867cf0"
+        finalityProviderPK[0]
+        // "2ba550f80f9a63cd0d00d306e96a3f73c09be93169a3ed4e1903e9e5c3867cf0"
       );
     }
   }, [
@@ -271,8 +278,14 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
     btcWallet.publicKeyNoCoord,
     availableUTXOs,
     stakeAmount,
-    timeStakeOfUser,
+    finalityProviderPK,
+    // timeStakeOfUser, //remove because otherwise it fetch too much
   ]);
+
+  //tu check si > 0.0007, et < 0.05
+  const isAmountEnough = stakeAmount && stakeAmount > 0.0007;
+  const isAmountNotTooHigh = stakeAmount && stakeAmount < 0.05;
+  const isRestakeButtonDisabled = !isAmountEnough || !isAmountNotTooHigh;
 
   return (
     <div className={styles.restakeApp}>
@@ -327,7 +340,7 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
             <div className={styles.tokenDiv}>
               {/* <div className={styles.waitingImg} /> */}
               <span className={`${styles.tokenSymbol} ${styles.vaultShare}`}>
-                BTC deposited
+                Deposited
               </span>
             </div>
 
@@ -352,11 +365,65 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
         </div>
       </div>
 
+      {/* Select duration */}
+      <div className={`${styles.inputContainer} ${styles.selectDuration}`}>
+        <div className={styles.label}>Select duration</div>
+        <div className={styles.lineInput}>
+          <div className={styles.topInput}>
+            <div className={styles.unit}>days</div>
+            <div className={styles.number}>{numberDaysOfUser}</div>
+          </div>
+          <div className={styles.bottomInput}>
+            {/* input range */}
+            <input
+              type="range"
+              step="1"
+              min="60"
+              max="730"
+              value={numberDaysOfUser}
+              onChange={(e) => setNumberDaysOfUser(Number(e.target.value))}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Restake button */}
       {btcWallet.connected ? (
-        <button className={styles.restakeBtn} onClick={handleRestake}>
-          Restake
-        </button>
+        stakeAmount === undefined ? (
+          <button
+            className={`${styles.restakeBtn} ${styles.disabled}`}
+            onClick={() => {
+              setStakeAmount(0.0007);
+              toast.success("We set the minimum stake for you.");
+            }}
+          >
+            Please select an amount
+          </button>
+        ) : stakeAmount < 0.0007 ? (
+          <button
+            className={`${styles.restakeBtn} ${styles.disabled}`}
+            onClick={() => {
+              setStakeAmount(0.0007);
+              toast.success("We set the minimum stake for you.");
+            }}
+          >
+            Min stake is 0.0007 BTC
+          </button>
+        ) : stakeAmount > 0.05 ? (
+          <button
+            className={`${styles.restakeBtn} ${styles.disabled}`}
+            onClick={() => {
+              setStakeAmount(0.05);
+              toast.success("We set the maximum stake for you.");
+            }}
+          >
+            Max stake is 0.05BTC
+          </button>
+        ) : (
+          <button className={styles.restakeBtn} onClick={handleRestake}>
+            Restake
+          </button>
+        )
       ) : (
         <button className={styles.restakeBtn} onClick={() => open()}>
           Connect wallet
@@ -368,10 +435,10 @@ const RestakeApp: React.FC<RestakeAppProps> = ({
         {/* <div className={styles.infoLine}>
           Reward rate: <span className={styles.highlight}>+3.9%</span>
         </div> */}
-        <div className={styles.infoLine}>
+        {/* <div className={styles.infoLine}>
           Validator activation:{" "}
           <span className={styles.highlight}>~0.4 jours</span>
-        </div>
+        </div> */}
         <div className={styles.infoLine}>
           Service fees: <span>0%</span>
         </div>

@@ -108,7 +108,11 @@ export const signStakingTx = async (
   publicKeyNoCoord: string,
   feeRate: number,
   inputUTXOs: UTXO[]
-): Promise<{ stakingTxHex: string; stakingTerm: number }> => {
+): Promise<{
+  stakingTxHex: string;
+  stakingTerm: number;
+  txHash: string;
+}> => {
   // Create the staking transaction
   let { unsignedStakingPsbt, stakingTerm, stakingFeeSat } = createStakingTx(
     globalParamsVersion,
@@ -136,8 +140,11 @@ export const signStakingTx = async (
 
   txFeeSafetyCheck(stakingTx, feeRate, stakingFeeSat);
 
+  const txHash = stakingTx.getId();
+  console.log("txHash in signStakingTx:", txHash);
+
   // Broadcast the staking transaction
   await pushTx(stakingTxHex);
 
-  return { stakingTxHex, stakingTerm };
+  return { stakingTxHex, stakingTerm, txHash };
 };
