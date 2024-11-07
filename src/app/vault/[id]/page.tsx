@@ -65,7 +65,12 @@ export default function Home() {
                     numberDigits={3}
                   />
                 </div> */}
-                <ListPoSChain avsList={specificVault.pos_chains} />
+                <ListPoSChain
+                  avsList={[
+                    ...specificVault.pos_chains,
+                    ...specificVault.avs_symbiotic,
+                  ]}
+                />
               </div>
               <div className={styles.numbers}>
                 <div className={styles.number}>

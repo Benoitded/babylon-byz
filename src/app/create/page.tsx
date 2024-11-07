@@ -122,10 +122,12 @@ function Page() {
 
     const uuid = crypto.randomUUID();
 
-    const posChains = basketAVS.map((avs) => avs.address);
-    const symbioticAVS = basketAVS.filter(
-      (avs) => avs.protocol === "Symbiotic"
-    );
+    const posChains = basketAVS
+      .filter((avs) => avs.protocol === "Babylon")
+      .map((avs) => avs.address);
+    const symbioticAVS = basketAVS
+      .filter((avs) => avs.protocol === "Symbiotic")
+      .map((avs) => avs.address);
 
     const newVaultData = {
       // Required: The name of the vault

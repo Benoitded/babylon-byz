@@ -24,17 +24,9 @@
         align-items: center;
         border-radius: 5px;
         height: 32px;
-        background-color: var(--main-hover-glass);
-        cursor: pointer;
+        background-color: var(--main-background-glass);
         &.selected {
           background-color: #ffffff51;
-        }
-
-        &:hover {
-          background-color: var(--main-active-glass);
-        }
-        &:active {
-          transform: scale(0.98);
         }
       }
     }

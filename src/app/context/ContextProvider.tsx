@@ -123,7 +123,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
       console.log("Got symbiotic AVS data", dataSymbiotic);
       setDataSymbioticAVS(dataSymbiotic);
 
-      fetchDataVaults([...data, ...dataSymbiotic]);
+      fetchDataVaults(data, dataSymbiotic);
 
       return data;
     } catch (error) {
@@ -141,9 +141,10 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
 
   //promise qui renvoie un tableau de VaultToDisplay
   const fetchDataVaults = async (
-    posChain: PoSChain[]
+    posChain: PoSChain[],
+    symbioticAVS: PoSChain[]
   ): Promise<VaultToDisplay[]> => {
-    console.log("Going to fetch vaults");
+    console.log("Going to fetch vaults with posChain:", posChain);
     try {
       const response = await fetch("/api/getRawVaults");
       const data: VaultsRaw[] = await response.json();
@@ -160,7 +161,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
         const posChainLinked = posChain.filter((pos) =>
           vault.pos_chains.includes(pos.address)
         );
-        const symbioticAVSLinked = dataSymbioticAVS.filter((symbiotic) =>
+        const symbioticAVSLinked = symbioticAVS.filter((symbiotic) =>
           vault.avs_symbiotic.includes(symbiotic.address)
         );
 
@@ -189,6 +190,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
           // total_stake: 0,
         };
       });
+      console.log("dataToDisplay:", dataToDisplay);
       setDataVaults(dataToDisplay);
       setIsLoadingVaults(false);
       return dataToDisplay;
@@ -304,7 +306,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
   // };
 
   const refreshDataVaults = () => {
-    fetchDataVaults([...dataPosChain, ...dataSymbioticAVS]);
+    fetchDataVaults(dataPosChain, dataSymbioticAVS);
     console.log("Refresh data vaults");
   };
 

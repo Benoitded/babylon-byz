@@ -96,12 +96,6 @@ const ContentAVSsBasket: React.FC<ContentAVSsBasketProps> = ({
     setSortedAVSs(newSortedAVSs);
   }
 
-  function handleClickSymbiotic() {
-    toast.error(
-      "Symbiotic is not yet available, but you will soon be able to select Symbiotic networks."
-    );
-  }
-
   return (
     <div className={styles.contentAVSsBasket}>
       <div className={styles.firstLine}>
@@ -117,7 +111,6 @@ const ContentAVSsBasket: React.FC<ContentAVSsBasketProps> = ({
             className={`${styles.protocolIcon} ${
               protocol === "Symbiotic" ? styles.selected : ""
             }`}
-            onClick={handleClickSymbiotic}
           >
             <FullSymbioticLogo width="auto" height={24} />
           </div>

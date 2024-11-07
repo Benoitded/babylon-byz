@@ -269,7 +269,9 @@ const ContentVaults: React.FC<ContentVaultsProps> = ({
                     Babylon
                   </td>
                   <td className={styles.avsTab}>
-                    <ListPoSChain avsList={vault.pos_chains} />
+                    <ListPoSChain
+                      avsList={[...vault.pos_chains, ...vault.avs_symbiotic]}
+                    />
                   </td>
                   <td className={styles.commissionTab}>
                     {vault.avg_commission.toFixed(2)}%
