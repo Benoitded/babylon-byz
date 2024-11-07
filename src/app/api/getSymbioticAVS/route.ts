@@ -5,26 +5,25 @@ import axios from "axios";
 import { VaultsRaw } from "@/app/types/vaultsData";
 import { vaultsData } from "@/data/dataVaults";
 import { supabase } from "@/lib/supabaseClient";
+import { SymbioticAVSfromSupabase, PoSChain } from "@/app/types/vaultsData";
 
 export async function GET(request: Request) {
   try {
-    const responseData: VaultsRaw[] = vaultsData;
-
-    let { data: list_vaults_babylon, error } = await supabase
-      .from("list_vaults_babylon")
-      .select(
-        "id, created_at, name,description,total_stake,apy,pos_chains,avs_symbiotic"
-      );
-    const formattedVaults = list_vaults_babylon?.map((vault) => ({
-      address: vault.id,
-      timestamp: new Date(vault.created_at).getTime(), // format timestamp
-      name: vault.name,
-      description: vault.description,
-      total_stake: vault.total_stake,
-      apy: vault.apy,
-      pos_chains: vault.pos_chains,
-      avs_symbiotic: vault.avs_symbiotic,
-    }));
+    let { data: list_avs_symbiotic, error } = await supabase
+      .from("list_avs_symbiotic")
+      .select("address, image_url, name, description, apy, total_stake");
+    console.log(list_avs_symbiotic);
+    const formattedVaults: PoSChain[] =
+      list_avs_symbiotic?.map((avs) => ({
+        address: avs.address,
+        name: avs.name,
+        description: avs.description,
+        apy: avs.apy,
+        commission: 0,
+        total_stake: avs.total_stake,
+        image_url: avs.image_url,
+        protocol: "Symbiotic",
+      })) || [];
 
     console.log(formattedVaults);
     const jsonResponse = NextResponse.json(formattedVaults);

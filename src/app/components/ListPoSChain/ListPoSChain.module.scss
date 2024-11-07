@@ -57,7 +57,12 @@
     &:active {
       transform: scale(0.95);
     }
+    &.symbiotic {
+      background-color: #cfffcb;
+      border: 1px solid #39e929;
+    }
   }
+
   .divImg {
     @include div-image-avs(28);
     border-radius: 50%; // Change to 50% for a perfect circle

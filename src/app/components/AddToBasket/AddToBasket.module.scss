@@ -1,0 +1,46 @@
+.addToBasket {
+  @include primary-button-pink;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 44px;
+  // width: 170px;
+  font-size: 14px;
+  box-sizing: border-box;
+  &.small {
+    height: 30px;
+    width: 150px;
+    svg {
+      width: 16px;
+      min-width: 16px;
+    }
+  }
+  &.inBasket {
+    // opacity: 0.5;
+    background-color: var(--dark-purple);
+    color: #ffffff80;
+    svg {
+      fill: #ffffff80;
+    }
+    &:hover {
+      transform: scale(1.02);
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+  &:not(.inBasket) {
+    &:hover {
+      background-color: var(--dark-purple);
+      color: #ffffff80;
+      svg {
+        fill: #ffffff80;
+      }
+      transform: scale(1.02);
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

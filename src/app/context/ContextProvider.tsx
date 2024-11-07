@@ -33,6 +33,7 @@ interface LocalStorageContextProps {
 
 interface DataAVSContextProps {
   dataPosChain: PoSChain[];
+  dataSymbioticAVS: PoSChain[];
   refreshPosChain: () => void;
   dataVaults: VaultToDisplay[];
   refreshDataVaults: () => void;
@@ -61,6 +62,7 @@ const LocalStorageContext = createContext<LocalStorageContextProps>({
 
 const DataAVSContext = createContext<DataAVSContextProps>({
   dataPosChain: [],
+  dataSymbioticAVS: [],
   refreshPosChain: () => {},
   dataVaults: [],
   refreshDataVaults: () => {},
@@ -94,6 +96,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
   });
 
   const [dataPosChain, setDataPosChain] = useState<PoSChain[]>([]);
+  const [dataSymbioticAVS, setDataSymbioticAVS] = useState<PoSChain[]>([]);
   const [dataVaults, setDataVaults] = useState<VaultToDisplay[]>([]);
   const [isDataAVSLoaded, setIsDataAVSLoaded] = useState(false);
   const [isLoadingVaults, setIsLoadingVaults] = useState(true);
@@ -105,16 +108,22 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
   const fetchPosChain = async () => {
     console.log("Going to fetch pos chain");
     try {
-      const [responseFP, responseCC] = await Promise.all([
+      const [responseFP, responseCC, responseSymbiotic] = await Promise.all([
         fetch("/api/getFinalityProviders"),
         fetch("/api/getConsumerChains"),
+        fetch("/api/getSymbioticAVS"),
       ]);
       const dataFP = await responseFP.json();
       const dataCC = await responseCC.json();
       const data = [...dataFP, ...dataCC];
       console.log("Got pos chain data", data);
       setDataPosChain(data);
-      fetchDataVaults(data);
+
+      const dataSymbiotic = await responseSymbiotic.json();
+      console.log("Got symbiotic AVS data", dataSymbiotic);
+      setDataSymbioticAVS(dataSymbiotic);
+
+      fetchDataVaults([...data, ...dataSymbiotic]);
 
       return data;
     } catch (error) {
@@ -139,7 +148,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
       const response = await fetch("/api/getRawVaults");
       const data: VaultsRaw[] = await response.json();
 
-      console.log("posChain", posChain);
+      console.log("posChainRaw:", posChain);
 
       //on link les adresses qu'on a des poschain dans response de l'api avec posChain
 
@@ -150,6 +159,9 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
 
         const posChainLinked = posChain.filter((pos) =>
           vault.pos_chains.includes(pos.address)
+        );
+        const symbioticAVSLinked = dataSymbioticAVS.filter((symbiotic) =>
+          vault.avs_symbiotic.includes(symbiotic.address)
         );
 
         const avgCommission =
@@ -172,7 +184,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
           ...vault,
           apy,
           pos_chains: posChainLinked,
-          avs_symbiotic: [],
+          avs_symbiotic: symbioticAVSLinked,
           avg_commission: avgCommission,
           // total_stake: 0,
         };
@@ -292,7 +304,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
   // };
 
   const refreshDataVaults = () => {
-    fetchDataVaults(dataPosChain);
+    fetchDataVaults([...dataPosChain, ...dataSymbioticAVS]);
     console.log("Refresh data vaults");
   };
 
@@ -312,6 +324,7 @@ export const ContextProvider: React.FC<ContextProviderProps> = ({
         value={{
           dataPosChain,
           refreshPosChain,
+          dataSymbioticAVS,
           dataVaults,
           refreshDataVaults,
           isLoadingVaults,

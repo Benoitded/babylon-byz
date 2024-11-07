@@ -62,7 +62,9 @@ const ListPoSChain: React.FC<ListPoSChainProps> = ({
         .map((avs, index) => {
           const content = (
             <div
-              className={styles.divAVS}
+              className={`${styles.divAVS} ${
+                avs.protocol === "Symbiotic" ? styles.symbiotic : ""
+              }`}
               onMouseEnter={() => setHoveredAVS(avs.address)}
               onMouseLeave={() => setHoveredAVS(null)}
             >

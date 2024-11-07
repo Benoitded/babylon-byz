@@ -5,12 +5,12 @@ import { VaultsRaw } from "@/app/types/vaultsData";
 export const vaultsData: VaultsRaw[] = [
   {
     address: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+    timestamp: 1627849200,
     name: "Vault 1",
     description:
       "First vault, offering optimal security and growth for your digital assets.",
     total_stake: 113.9,
     apy: 5.5,
-    restaking_protocol: ["Babylon"],
     pos_chains: [
       "50e7eb0b83f31136a97c7edeb8d5acce7b42746149c21d1d55f5c8d1b2a962d2", // Babylon Foundation 3"
       "f4940b238dcd00535fde9730345bab6ff4ea6d413cc3602c4033c10f251c7e81",
@@ -19,17 +19,15 @@ export const vaultsData: VaultsRaw[] = [
       "17d33e18ab85b33050c763a44d8757dfe4e0a3c49e12911f65e0529c3cd224b6",
     ],
     avs_symbiotic: [],
-    timestamp: 1627849200,
-    hash: "abc123",
   },
   {
     address: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
+    timestamp: 1627849300,
     name: "Vault 2",
     description:
       "The second vault provides exceptional security measures and significant growth potential for your digital assets. It is designed to ensure the safety of your investments while maximizing returns through advanced restaking protocols and strategic asset management.",
     total_stake: 245.1,
     apy: 6.0,
-    restaking_protocol: ["Symbiotic"],
     pos_chains: [
       "609e04a629f86d4eae4bd2ba3db9206739054a6696706f84ca1c6ad688872eb1", // Babylon Foundation 4"
       "13d16cebc8d998efb5aa94d46a449ae2e0ebb29947922185a218eeda1788c52a",
@@ -40,7 +38,5 @@ export const vaultsData: VaultsRaw[] = [
       "3862a06f75cc707729588eddb85119fdae37404f879a9a90f545f54ab531531b",
     ],
     avs_symbiotic: [],
-    timestamp: 1627849300,
-    hash: "def456",
   },
 ];

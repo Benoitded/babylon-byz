@@ -1,0 +1,126 @@
+.contentSelectSettings {
+  @include primary-div;
+  .lineSettings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid var(--main-hover-glass);
+    &:last-child {
+      border-bottom: none;
+    }
+    .labelSettings {
+      font-weight: 400;
+      color: #ffffff80;
+    }
+    .rightSettings {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      height: 35.5px;
+      min-width: 250px;
+      border: 1px solid #ffffff80;
+      border-radius: 5px;
+      min-width: 280px;
+      input {
+        background-color: transparent;
+        // border: 1px solid #ffffff80;
+        border: none;
+        outline: none;
+        // border-radius: 5px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        width: 100%;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+      &.tokenDiv {
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        & * {
+          transition: 0.2s;
+        }
+
+        img,
+        .waitingImg {
+          width: 24px;
+          height: 24px;
+          border-radius: 6px;
+        }
+        position: relative;
+        .tokenDiv {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          position: absolute;
+          right: 8px;
+          .tokenSymbol {
+            font-size: 18px;
+            font-weight: 700;
+          }
+          svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff5d;
+          }
+        }
+      }
+      &.periodDiv {
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        input[type="range"] {
+          padding: 0;
+        }
+        input[type="text"] {
+          width: 60px;
+          text-align: right;
+          padding: 0;
+        }
+      }
+      button {
+        background-color: var(--main-hover-glass);
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+        &:hover {
+          background-color: var(--main-active-glass);
+        }
+        &.selected {
+          background-color: #ffffff5c;
+        }
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .contentSelectSettings {
+    gap: 16px;
+    .lineSettings {
+      flex-direction: column;
+      align-items: flex-start;
+      border-bottom: none;
+      gap: 6px;
+      height: auto;
+      .rightSettings {
+        width: 100%;
+        input {
+          min-width: 100%;
+        }
+      }
+    }
+  }
+}

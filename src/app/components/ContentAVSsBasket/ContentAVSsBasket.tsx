@@ -1,117 +1,132 @@
-// src/components/ContentPoSChains.tsx
+// src/components/ContentAVSsBasket.tsx
 import React, { useEffect, useState } from "react";
 import { useTransitionRouter } from "next-view-transitions";
-import { Link } from "next-view-transitions";
+// import { Link } from "next-view-transitions";
 import Lottie from "lottie-react";
 
 import EmptyLottie from "@/assets/lottie/empty.json";
-
-import ArrowsOrderIcon from "@/assets/icons/arrowsOrder.svg";
-import styles from "./ContentPoSChains.module.scss";
 import FullBabylonLogo from "@/assets/FullBabylonLogo.svg";
 import FullSymbioticLogo from "@/assets/FullSymbioticLogo.svg";
 
+import ArrowsOrderIcon from "@/assets/icons/arrowsOrder.svg";
+import styles from "./ContentAVSsBasket.module.scss";
+import { useDataAVS } from "@/app/context/ContextProvider";
+
 import SearchBar from "./SearchBar/SearchBar";
 import { PoSChain } from "@/app/types/vaultsData";
+import AddToBasket from "@/app/components/AddToBasket/AddToBasket";
 import toast from "react-hot-toast";
 import { SpinnerPedro } from "@/utils/SpinnerPedro/SpinnerPedro";
 import Blockies from "react-blockies";
+import { ProtocolType } from "@/app/types/vaultsData";
 
-interface ContentPoSChainsProps {
-  posChainList: PoSChain[];
-  symbioticAVSList: PoSChain[];
+interface ContentAVSsBasketProps {
   isSearchBar?: boolean;
   isLoading?: boolean;
+  protocol: ProtocolType;
 }
 
 type Order = "random" | "name" | "apy" | "commission" | "protocol";
 type SortDirection = "asc" | "desc";
 
-const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
-  posChainList,
-  symbioticAVSList,
+const ContentAVSsBasket: React.FC<ContentAVSsBasketProps> = ({
   isSearchBar,
   isLoading,
+  protocol,
 }) => {
-  const [allAVSs, setAllAVSs] = useState<PoSChain[]>([
-    ...posChainList,
-    ...symbioticAVSList,
-  ]);
-  const [sortedPoSChains, setSortedPoSChains] = useState<PoSChain[]>([]);
-  const [filteredPoSChains, setFilteredPoSChains] =
-    useState<PoSChain[]>(allAVSs);
+  const router = useTransitionRouter();
+  const { dataPosChain, dataSymbioticAVS } = useDataAVS();
+  const [sortedAVSs, setSortedAVSs] = useState<PoSChain[]>([]);
+  const [filteredAVSs, setFilteredAVSs] = useState<PoSChain[]>([]);
   const [currentOrder, setCurrentOrder] = useState<Order>("random");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    setAllAVSs([...posChainList, ...symbioticAVSList]);
-  }, [posChainList, symbioticAVSList]);
-
   // Effet pour initialiser et trier les vaults
   useEffect(() => {
-    if (allAVSs) {
-      const initialSortedPoSChains = [...allAVSs];
-      sortPoSChains(initialSortedPoSChains, currentOrder, sortDirection);
-      setSortedPoSChains(initialSortedPoSChains);
+    const currentData =
+      protocol === "Babylon" ? dataPosChain : dataSymbioticAVS;
+    if (currentData) {
+      const initialSortedVaults = [...currentData];
+      sortAVSs(initialSortedVaults, currentOrder, sortDirection);
+      setSortedAVSs(initialSortedVaults);
     }
-  }, [allAVSs, currentOrder, sortDirection]);
+  }, [dataPosChain, dataSymbioticAVS, protocol, currentOrder, sortDirection]);
 
   // Effet pour filtrer les vaults triés
   useEffect(() => {
-    const filtered = allAVSs.filter((posChain) =>
-      posChain.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filtered = sortedAVSs.filter((avs) =>
+      avs.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const sortedFiltered = [...filtered];
-    sortPoSChains(sortedFiltered, currentOrder, sortDirection);
-    setFilteredPoSChains(sortedFiltered);
-    console.log("allAVSs", allAVSs);
-    console.log("filteredPoSChains", filteredPoSChains);
-  }, [allAVSs, searchTerm, currentOrder, sortDirection]);
+    setFilteredAVSs(filtered);
+  }, [sortedAVSs, searchTerm]);
 
-  function sortPoSChains(
-    PoSChains: PoSChain[],
-    order: Order,
-    direction: SortDirection
-  ) {
+  function sortAVSs(AVSs: PoSChain[], order: Order, direction: SortDirection) {
     const sortFunctions = {
       random: () => Math.random() - 0.5,
       name: (a: PoSChain, b: PoSChain) =>
         (a.name || "").localeCompare(b.name || ""),
+      // total_staked: (a: PoSChain, b: PoSChain) =>
+      //   b.total_staked - a.total_staked,
       apy: (a: PoSChain, b: PoSChain) => b.apy - a.apy,
       commission: (a: PoSChain, b: PoSChain) => b.commission - a.commission,
-      //pour ptotocol par ordre alphabétique
       protocol: (a: PoSChain, b: PoSChain) =>
         (a.protocol || "").localeCompare(b.protocol || ""),
     };
 
     const sortFunction = sortFunctions[order];
-    PoSChains.sort((a, b) => {
+    AVSs.sort((a, b) => {
       const result = sortFunction(a, b);
       return direction === "asc" ? result : -result;
     });
   }
 
   function handleOrderChange(order: Order) {
-    const newDirection =
-      order === currentOrder && sortDirection === "asc" ? "desc" : "asc";
-    setCurrentOrder(order);
-    setSortDirection(newDirection);
+    if (order === currentOrder) {
+      // Si on clique sur le même ordre, on inverse la direction
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      // Si on change d'ordre, on réinitialise la direction à "asc"
+      setCurrentOrder(order);
+      setSortDirection("asc");
+    }
 
-    const newSortedPoSChains = [...allAVSs];
-    sortPoSChains(newSortedPoSChains, order, newDirection);
-    setSortedPoSChains(newSortedPoSChains);
+    const newSortedAVSs = [...sortedAVSs];
+    sortAVSs(newSortedAVSs, order, sortDirection);
+    setSortedAVSs(newSortedAVSs);
+  }
+
+  function handleClickSymbiotic() {
+    toast.error(
+      "Symbiotic is not yet available, but you will soon be able to select Symbiotic networks."
+    );
   }
 
   return (
-    <div className={styles.contentPoSChains}>
+    <div className={styles.contentAVSsBasket}>
       <div className={styles.firstLine}>
-        <div className={styles.title}>Consumer Chains</div>
+        <div className={styles.leftFirstLine}>
+          <div
+            className={`${styles.protocolIcon} ${
+              protocol === "Babylon" ? styles.selected : ""
+            }`}
+          >
+            <FullBabylonLogo width="auto" height={20} />
+          </div>
+          <div
+            className={`${styles.protocolIcon} ${
+              protocol === "Symbiotic" ? styles.selected : ""
+            }`}
+            onClick={handleClickSymbiotic}
+          >
+            <FullSymbioticLogo width="auto" height={24} />
+          </div>
+        </div>
         <div className={styles.rightFirstLine}>
           {isSearchBar && (
             <SearchBar
-              listPoSChains={sortedPoSChains || []}
-              setFilteredListPoSChains={setFilteredPoSChains}
+              listAVSs={sortedAVSs || []}
+              setFilteredListAVSs={setFilteredAVSs}
             />
           )}
         </div>
@@ -133,20 +148,19 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
               Name
               <ArrowsOrderIcon />
             </td>
-            <td
-              onClick={() => handleOrderChange("protocol")}
-              className={`${styles.protocolTab} ${styles.clickable} ${
-                currentOrder === "protocol"
-                  ? sortDirection === "asc"
-                    ? styles.asc
-                    : styles.desc
-                  : ""
-              }`}
-            >
-              Protocol
-              <ArrowsOrderIcon />
-            </td>
-
+            {/* <td className={`${styles.totalStakeTab} ${styles.clickable}`}>
+              Total Stake
+              <ArrowsOrderIcon
+                onClick={() => handleOrderChange("total_staked")}
+                className={
+                  currentOrder === "total_staked"
+                    ? sortDirection === "asc"
+                      ? styles.asc
+                      : styles.desc
+                    : ""
+                }
+              />
+            </td> */}
             <td
               onClick={() => handleOrderChange("apy")}
               className={`${styles.apyTab} ${styles.clickable} ${
@@ -162,7 +176,7 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
             </td>
             <td
               onClick={() => handleOrderChange("commission")}
-              className={`${styles.commissionTab} ${
+              className={`${styles.commissionTab} ${styles.clickable} ${
                 currentOrder === "commission"
                   ? sortDirection === "asc"
                     ? styles.asc
@@ -173,6 +187,7 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
               Commission
               <ArrowsOrderIcon />
             </td>
+            <td className={styles.buttonTab}></td>
           </tr>
 
           {isLoading ? (
@@ -182,33 +197,26 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
                 Loading...
               </td>
             </tr>
-          ) : filteredPoSChains && filteredPoSChains.length > 0 ? (
-            filteredPoSChains.map((PoSChain, index) => {
+          ) : filteredAVSs && filteredAVSs.length > 0 ? (
+            filteredAVSs.map((AVS, index) => {
               return (
-                <Link
-                  href={`/avs/${PoSChain.address}`}
-                  className={styles.lineTab}
-                  key={index}
-                >
+                <div className={styles.lineTab} key={index}>
                   <td
                     className={styles.nameTab}
-                    title={PoSChain.name ? PoSChain.name : "No name PoS Chain"}
+                    title={AVS.name ? AVS.name : "No name vault"}
+                    style={{
+                      viewTransitionName:
+                        "name-strategy-avs-" + AVS.address.toLowerCase(),
+                    }}
                   >
-                    <div
-                      className={styles.divImg}
-                      style={{
-                        viewTransitionName:
-                          "avs-image-" + PoSChain.address.toLowerCase(),
-                      }}
-                    >
-                      {/* img or blockies */}
-                      {PoSChain.image_url ? (
-                        <img src={PoSChain.image_url} alt={PoSChain.name} />
+                    <div className={styles.divImg}>
+                      {AVS.image_url ? (
+                        <img src={AVS.image_url} alt={AVS.name} />
                       ) : (
-                        <Blockies seed={PoSChain.address} />
+                        <Blockies seed={AVS.address} size={10} />
                       )}
                     </div>
-                    {PoSChain.name ? PoSChain.name : "No name PoS Chain"}
+                    {AVS.name ? AVS.name : "No name AVS"}
                   </td>
                   {/* <td className={styles.totalStakeTab}>
                     <Image src={ETH} alt="ETH" width={18} height={18} />
@@ -217,18 +225,19 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
                       {formatNumber(AVS.total_staked * ETH_PRICE)} $
                     </span>
                   </td> */}
-                  <td className={styles.protocolTab}>
-                    {PoSChain.protocol === "Babylon" ? (
-                      <FullBabylonLogo width="auto" height={18} />
-                    ) : (
-                      <FullSymbioticLogo width="auto" height={18} />
-                    )}
-                  </td>
-                  <td className={styles.apyTab}>{PoSChain.apy.toFixed(2)}%</td>
+                  <td className={styles.apyTab}>{AVS.apy.toFixed(2)}%</td>
                   <td className={styles.commissionTab}>
-                    {PoSChain.commission.toFixed(2)}%
+                    {AVS.commission.toFixed(2)}%
                   </td>
-                </Link>
+                  <td className={styles.buttonTab}>
+                    {/* <button
+                      onClick={(event) => handleRestake(event, AVS.address)}
+                    >
+                      Add to basket
+                    </button> */}
+                    <AddToBasket avs={AVS} isSmall />
+                  </td>
+                </div>
               );
             })
           ) : (
@@ -252,4 +261,4 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
   );
 };
 
-export default ContentPoSChains;
+export default ContentAVSsBasket;

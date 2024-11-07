@@ -11,7 +11,7 @@ import OpenIcon from "@/assets/icons/open.svg";
 
 import { BTC_PRICE, useDataAVS } from "@/app/context/ContextProvider";
 import ContentVaults from "@/app/components/ContentVaults/ContentVaults";
-import FullBabylonLogo from "@/assets/fullBabylonLogo.svg";
+import FullBabylonLogo from "@/assets/FullBabylonLogo.svg";
 
 import { VaultToDisplay } from "@/app/types/vaultsData";
 import ListPoSChain from "@/app/components/ListPoSChain/ListPoSChain";
@@ -53,7 +53,7 @@ export default function Home() {
                 <div className={styles.tag}>ETH</div>
                 <div className={styles.tag}>
                   {/* <EigenLayerIcon /> */}
-                  <FullBabylonLogo />
+                  <FullBabylonLogo width="auto" height={16} />
                 </div>
                 {/* <div className={styles.tag}>
                   by{" "}
@@ -66,12 +66,6 @@ export default function Home() {
                   />
                 </div> */}
                 <ListPoSChain avsList={specificVault.pos_chains} />
-                <Link
-                  href={`https://mempool.space/signet/tx/${specificVault.hash}`}
-                  target="_blank"
-                >
-                  <OpenIcon />
-                </Link>
               </div>
               <div className={styles.numbers}>
                 <div className={styles.number}>
@@ -106,6 +100,7 @@ export default function Home() {
           </section>
           <ContentPoSChains
             posChainList={specificVault.pos_chains}
+            symbioticAVSList={specificVault.avs_symbiotic}
             isSearchBar
           />
         </>

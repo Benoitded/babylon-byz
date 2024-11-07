@@ -1,4 +1,4 @@
-.contentPoSChains {
+.contentAVSsBasket {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -18,7 +18,7 @@
       align-items: center;
       gap: 12px;
       .protocolIcon {
-        padding: 2px 36px;
+        padding: 2px 24px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -26,11 +26,8 @@
         height: 32px;
         background-color: var(--main-hover-glass);
         cursor: pointer;
-        &:first-child {
+        &.selected {
           background-color: #ffffff51;
-        }
-        svg {
-          height: 24px;
         }
 
         &:hover {
@@ -56,7 +53,7 @@
 }
 
 @media (max-width: 650px) {
-  .contentAVSs {
+  .contentAVSsBasket {
     gap: 12px;
     .firstLine {
       flex-direction: column-reverse;
@@ -106,20 +103,24 @@
       // background-color: rgba(188, 77, 168, 0.1);
       background-color: rgba(255, 255, 255, 0.1);
       cursor: pointer;
+      // .buttonTab {
+      // background-color: #69285c;
+      // background-color: rgba(255, 255, 255, 0.1);
+      // }
     }
     &:last-child {
       border-bottom: none;
     }
 
     .nameTab,
-    .protocolTab,
     .totalStakeTab,
     .apyTab,
     .restakingProtocolTab,
     .avsTab,
-    .commissionTab {
+    .riskScoreTab,
+    .buttonTab {
       padding: 0px;
-      min-width: 200px;
+      min-width: 280px;
       width: 100%;
       gap: 6px;
       // min-width: 140px;
@@ -132,20 +133,13 @@
       justify-content: flex-start;
       align-items: center;
     }
-    .protocolTab {
-      justify-content: flex-end;
-      svg {
-        // height: 80px;
-        width: auto;
-      }
-    }
 
     .nameTab {
       .divImg {
         @include div-image-avs(30);
       }
       gap: 6px;
-      min-width: 230px;
+      min-width: max(40vw, 330px);
     }
     .totalStakeTab {
       // width: 220px;
@@ -170,20 +164,41 @@
         height: 24px;
       }
     }
-    .apyTab {
-      min-width: 120px;
-      justify-content: flex-end;
+    .riskScoreTab {
+      min-width: 230px;
     }
-    .commissionTab {
-      min-width: 150px;
-      justify-content: flex-end;
-      padding-right: 24px;
+    .buttonTab {
+      position: sticky;
+      width: 130px;
+      min-width: 130px;
+      right: 0px;
+      background-color: #2e192a;
+      z-index: 2;
+      justify-content: center;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      button {
+        // @include flash-button(10);
+        // @include primary-button-pink;
+        font-size: 12px;
+        height: 30px;
+        width: 110px;
+      }
     }
 
     &.header {
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       font-weight: 800;
-
+      .buttonTab {
+        border-left: none;
+        //la couleur commence au milieu
+        background: linear-gradient(to right, transparent, #2e192a 70%);
+      }
+      // .clickable {
+      //   cursor: pointer;
+      //   &:hover {
+      //     color: #ffffffa0;
+      //   }
+      // }
       & > * {
         cursor: pointer;
         &:hover {

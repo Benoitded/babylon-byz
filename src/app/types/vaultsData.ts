@@ -1,6 +1,13 @@
 // src/app/types/vaultsData.ts
 
-export type Protocol = "Babylon" | "Symbiotic";
+export type ProtocolType = "Babylon" | "Symbiotic";
+
+export interface SymbioticAVSfromSupabase {
+  address: string;
+  image_url: string;
+  name: string;
+  description: string;
+}
 
 export interface PoSChain {
   address: string; // Actually public key
@@ -10,20 +17,18 @@ export interface PoSChain {
   commission: number;
   total_stake: number;
   image_url?: string; // image url or blockies with the address
-  protocol: Protocol;
+  protocol: ProtocolType;
 }
 
 export type VaultsRaw = {
   address: string; // btc address of the vault
+  timestamp: number;
   name: string;
   description?: string;
   total_stake: number;
   apy: number;
-  restaking_protocol: Protocol[];
   pos_chains: string[]; //with only the addresses
   avs_symbiotic: string[]; //with only the addresses
-  timestamp: number;
-  hash: string;
 };
 
 export type VaultToDisplay = {
@@ -33,11 +38,9 @@ export type VaultToDisplay = {
   total_stake: number;
   apy: number;
   avg_commission: number;
-  restaking_protocol: Protocol[];
   pos_chains: PoSChain[];
   avs_symbiotic: PoSChain[];
   timestamp: number;
-  hash: string;
 };
 
 export interface FinalityProviderFromAPI {
@@ -76,4 +79,13 @@ export interface ConsumerChainFromAPI {
   total_tvl: number;
   active_delegations: number;
   total_delegations: number;
+}
+
+export interface SettingsCreateVault {
+  name: string;
+  description: string;
+  curatorName: string;
+  // isModifiable: boolean;
+  // isPublic: boolean;
+  // curatorFee: number;
 }

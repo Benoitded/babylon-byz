@@ -9,6 +9,7 @@ import { SpinnerPedro } from "@/utils/SpinnerPedro/SpinnerPedro";
 import EmptyLottie from "@/assets/lottie/empty.json";
 // import EigenLayerIcon from "@/assets/brands/eigenlayer.svg";
 // import ETH from "@/assets/tokens/ETH.png";
+import BabylonIcon from "@/assets/BabylonLogo.svg";
 import Bitcoin from "@/assets/bitcoin.svg";
 import ArrowsOrderIcon from "@/assets/icons/arrowsOrder.svg";
 import styles from "./ContentVaults.module.scss";
@@ -78,6 +79,7 @@ const ContentVaults: React.FC<ContentVaultsProps> = ({
     const filtered = sortedVaults.filter((vault) =>
       vault.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    console.log("filtered", filtered);
     setFilteredVaults(filtered);
   }, [sortedVaults, searchTerm]);
 
@@ -263,7 +265,7 @@ const ContentVaults: React.FC<ContentVaultsProps> = ({
                   </td>
                   <td className={styles.apyTab}>{vault.apy.toFixed(2)}%</td>
                   <td className={styles.restakingProtocolTab}>
-                    {/* <EigenLayerIcon /> */}
+                    <BabylonIcon height={20} width={20} title="Babylon" />
                     Babylon
                   </td>
                   <td className={styles.avsTab}>

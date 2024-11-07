@@ -17,6 +17,7 @@
     "@reown/appkit-adapter-wagmi": "^1.0.4",
     "@sentry/nextjs": "^8.37.1",
     "@sentry/react": "^8.37.1",
+    "@supabase/supabase-js": "^2.46.1",
     "@tanstack/react-query": "^5.56.2",
     "@tomo-inc/tomo-wallet-provider": "^1.0.21",
     "@tomo-inc/wallet-connect-sdk": "^0.2.16",
