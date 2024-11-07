@@ -3,13 +3,10 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { VaultsRaw } from "@/app/types/vaultsData";
-import { vaultsData } from "@/data/dataVaults";
 import { supabase } from "@/lib/supabaseClient";
 
 export async function GET(request: Request) {
   try {
-    const responseData: VaultsRaw[] = vaultsData;
-
     let { data: list_vaults_babylon, error } = await supabase
       .from("list_vaults_babylon")
       .select(
@@ -27,9 +24,18 @@ export async function GET(request: Request) {
     }));
 
     console.log(formattedVaults);
-    const jsonResponse = NextResponse.json(formattedVaults);
-    jsonResponse.headers.set("Cache-Control", "no-store, max-age=0");
-    return jsonResponse;
+    const response = NextResponse.json(formattedVaults);
+
+    // Ajout d'en-têtes plus stricts pour le cache
+    response.headers.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
+    response.headers.set("Surrogate-Control", "no-store");
+
+    return response;
   } catch (error) {
     console.error("Error during the fetching of vaults:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
