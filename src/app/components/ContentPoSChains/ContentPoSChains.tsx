@@ -221,7 +221,7 @@ const ContentPoSChains: React.FC<ContentPoSChainsProps> = ({
                     {PoSChain.protocol === "Babylon" ? (
                       <FullBabylonLogo width="auto" height={18} />
                     ) : (
-                      <FullSymbioticLogo width="auto" height={18} />
+                      <FullSymbioticLogo width="auto" height={22} />
                     )}
                   </td>
                   <td className={styles.apyTab}>{PoSChain.apy.toFixed(2)}%</td>
