@@ -5,6 +5,9 @@ import axios from "axios";
 import { VaultsRaw } from "@/app/types/vaultsData";
 import { supabase } from "@/lib/supabaseClient";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   try {
     let { data: list_vaults_babylon, error } = await supabase
@@ -26,15 +29,11 @@ export async function GET(request: Request) {
     console.log(formattedVaults);
     const response = NextResponse.json(formattedVaults);
 
-    // Ajout d'en-têtes plus stricts pour le cache
     response.headers.set(
       "Cache-Control",
       "no-store, no-cache, must-revalidate, proxy-revalidate"
     );
-    response.headers.set("Pragma", "no-cache");
-    response.headers.set("Expires", "0");
-    response.headers.set("Surrogate-Control", "no-store");
-
+    response.headers.set("Cache-Control", "no-store, max-age=0");
     return response;
   } catch (error) {
     console.error("Error during the fetching of vaults:", error);
